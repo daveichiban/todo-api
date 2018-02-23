@@ -17,6 +17,20 @@ db.collection("Todos").insertOne({
      console.log(JSON.stringify(result.ops, undefined, 2));
 });
 
+
+db.collection('Users').insertOne({
+    name: 'Dave',
+    age: 31,
+    location: 'Manchester'
+  }, (err, result) => {
+    if (err) {
+      return console.log('Unable to insert user', err);
+    }
+
+    console.log(result.ops);
+  });
+  
 client.close();
+
 
 });
