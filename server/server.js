@@ -1,17 +1,29 @@
 require("./config/config");
 
 
+<<<<<<< HEAD
+=======
+if (env === 'development') {
+    process.env.PORT = 3000;
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp';
+} else if (env === 'test') {
+    process.env.PORT = 3000;
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest';
+}
+
+console.log(process.env.MONGODB_URI);
+>>>>>>> 38dcb7b79bc31317b7f428cd63f1134fbcbc6e98
 
 
 const _ = require("lodash");
-const {ObjectID} = require("mongodb");
+const { ObjectID } = require("mongodb");
 const express = require("express");
 const bodyParser = require("body-parser")
 
 
-const {mongoose} = require("./db/mongoose");
-const {Todo} = require("./models/todo");
-const {User} = require("./models/user");
+const { mongoose } = require("./db/mongoose");
+const { Todo } = require("./models/todo");
+const { User } = require("./models/user");
 
 var app = express();
 
@@ -22,18 +34,18 @@ app.post("/todos", (req, res) => {
     var todo = new Todo({
         text: req.body.text
     });
-    todo.save().then ((doc) => {
+    todo.save().then((doc) => {
         res.send(doc);
     }, (e) => {
         res.status(400).send(e);
     }
-);
+    );
     console.log(req.body);
 });
 
 app.get("/todos", (req, res) => {
     Todo.find().then((todos) => {
-        res.send({todos});
+        res.send({ todos });
     }, (e) => {
         res.status(400).send(e);
     })
@@ -47,25 +59,44 @@ app.get("/todos/:id", (req, res) => {
     }
 
     Todo.findById(id).then((todo) => {
-        if(!todo) {
+        if (!todo) {
             return res.status(404).send();
-        }        
-        res.send({todo});
-    }).catch ((e) => {
+        }
+        res.send({ todo });
+    }).catch((e) => {
         res.status(404).send();
     });
 });
 
+app.delete("/todos/:id", (req, res) => {
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        console.log("Non valid id");
+        return res.status(404).send();
+    }
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if (!todo) {
+            res.status(404).send();
+        }
+        res.send({ todo });
+    }).catch((e) => {
+        console.log("Something happened");
+        res.status(404).send();
+    });
+});
+
+
 app.patch("/todos/:id", (req, res) => {
     var id = req.params.id;
     var body = _.pick(req.body, ["text", "completed"]);
-    
+
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
 
-    if(_.isBoolean(body.completed) && body.completed) {
-        
+    if (_.isBoolean(body.completed) && body.completed) {
+
         body.completedAt = new Date().getTime();
     } else {
 
@@ -73,17 +104,18 @@ app.patch("/todos/:id", (req, res) => {
         body.completedAt = null;
     }
 
-    Todo.findByIdAndUpdate(id, {$set:body}, {new: true}).then((todo) => {
-        if(!todo) {
+    Todo.findByIdAndUpdate(id, { $set: body }, { new: true }).then((todo) => {
+        if (!todo) {
             return res.status(404).send();
         }
-        res.send({todo});
-    }).catch ((e) => {
+        res.send({ todo });
+    }).catch((e) => {
         res.status(400).send();
     });
 });
 
 
+<<<<<<< HEAD
 app.post("/users", (req, res) => {
     var user = new User (_.pick(req.body, ["email", "password"]))
     user.save().then ((doc) => {
@@ -94,6 +126,8 @@ app.post("/users", (req, res) => {
 );
     console.log(req.body);
 });
+=======
+>>>>>>> 38dcb7b79bc31317b7f428cd63f1134fbcbc6e98
 
 
 app.listen(port, () => {
