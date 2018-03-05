@@ -1,20 +1,5 @@
 require("./config/config");
 
-
-<<<<<<< HEAD
-=======
-if (env === 'development') {
-    process.env.PORT = 3000;
-    process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp';
-} else if (env === 'test') {
-    process.env.PORT = 3000;
-    process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest';
-}
-
-console.log(process.env.MONGODB_URI);
->>>>>>> 38dcb7b79bc31317b7f428cd63f1134fbcbc6e98
-
-
 const _ = require("lodash");
 const { ObjectID } = require("mongodb");
 const express = require("express");
@@ -115,7 +100,6 @@ app.patch("/todos/:id", (req, res) => {
 });
 
 
-<<<<<<< HEAD
 app.post("/users", (req, res) => {
     var user = new User (_.pick(req.body, ["email", "password"]))
     user.save().then ((doc) => {
@@ -126,8 +110,6 @@ app.post("/users", (req, res) => {
 );
     console.log(req.body);
 });
-=======
->>>>>>> 38dcb7b79bc31317b7f428cd63f1134fbcbc6e98
 
 
 app.listen(port, () => {
