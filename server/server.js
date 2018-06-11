@@ -27,7 +27,6 @@ app.post("/todos", (req, res) => {
         res.status(400).send(e);
     }
     );
-    console.log(req.body);
 });
 
 app.get("/todos", (req, res) => {
@@ -57,9 +56,7 @@ app.get("/todos/:id", (req, res) => {
 
 app.delete("/todos/:id", (req, res) => {
     var id = req.params.id;
-
     if (!ObjectID.isValid(id)) {
-        console.log("Non valid id");
         return res.status(404).send();
     }
     Todo.findByIdAndRemove(id).then((todo) => {
@@ -68,7 +65,6 @@ app.delete("/todos/:id", (req, res) => {
         }
         res.send({ todo });
     }).catch((e) => {
-        console.log("Something happened");
         res.status(404).send();
     });
 });
